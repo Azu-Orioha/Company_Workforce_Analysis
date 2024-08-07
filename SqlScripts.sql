@@ -77,14 +77,9 @@ WHERE tt.title = 'Manager'
 
 select * from departments
 
-/* 12.Find the department with the highest number of employees. */
-select count(ee.emp_no) as Number_Of_Employees, dd.dep_name as Department from Employees ee
-join dept_emp de on ee.emp_no = de.emp_no
-join departments dd on dd.dep_no = de.dept_no
-Group by dep_name
-order by dd.dep_Name Asc
 
-/*12B*/
+
+/*11B*/
 SELECT 
     m.first_name, 
     m.last_name, 
@@ -105,6 +100,15 @@ JOIN
          d.dep_name
      FROM 
          departments d) AS d ON m.dept_no = d.dep_no;
+
+
+/* 12.Find the department with the highest number of employees. */
+select count(ee.emp_no) as Number_Of_Employees, dd.dep_name as Department from Employees ee
+join dept_emp de on ee.emp_no = de.emp_no
+join departments dd on dd.dep_no = de.dept_no
+Group by dep_name
+order by dd.dep_Name Asc
+
 
 /* 13.*/
 /* 14.*/
