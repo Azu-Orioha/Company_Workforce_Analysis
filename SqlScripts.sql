@@ -77,9 +77,14 @@ WHERE tt.title = 'Manager'
 
 select * from departments
 
+/* 12.Find the department with the highest number of employees. */
+select count(ee.emp_no) as Number_Of_Employees, dd.dep_name as Department from Employees ee
+join dept_emp de on ee.emp_no = de.emp_no
+join departments dd on dd.dep_no = de.dept_no
+Group by dep_name
+order by dd.dep_Name Asc
 
-
-/*11B*/
+/*12B*/
 SELECT 
     m.first_name, 
     m.last_name, 
@@ -101,21 +106,110 @@ JOIN
      FROM 
          departments d) AS d ON m.dept_no = d.dep_no;
 
+/* 13.Retrieve the employee number, first name, last name, and salary of 
+employees earning more than $60,000. */
 
-/* 12.Find the department with the highest number of employees. */
-select count(ee.emp_no) as Number_Of_Employees, dd.dep_name as Department from Employees ee
-join dept_emp de on ee.emp_no = de.emp_no
+select  ee.emp_no, ee.first_name as First_Name, ee.last_name as Last_Name, ss.salary 
+from employees  ee
+	join salaries ss on ee.emp_no = ss.emp_no
+	where ss.salary > 60000
+	order by salary
+
+/* 14.Get the average salary for each department. */
+select dd.dep_name, avg(salary) As Average_Salary from salaries ss
+join dept_emp de on de.emp_no = ss.emp_no
 join departments dd on dd.dep_no = de.dept_no
+group by dd.dep_name
+
+/* 15.Retrieve the employee number, first name, last name, and title of all employees who are 
+currently managers. */
+
+Select emp_no, first_name, last_name from employees 
+select * from employee_titles
+select * from dept_manager
+select * from dept_emp
+
+/* 16. Find the total number of employees in each department.*/
+
+select count(ee.emp_no), dep_name
+from employees ee 
+join dept_emp de on ee.emp_no = de.emp_no
+Join departments dd on de.dept_no = dd.dep_no
 Group by dep_name
-order by dd.dep_Name Asc
+
+/* 17. Retrieve the department number and name 
+where the most recently hired employee works.*/  
+
+select dd.dep_no, dd.dep_name 
+from departments dd
+join dept_emp de on de.dept_no = dd.dep_no
+Join Employees ee on ee.emp_no = de.emp_no
+where ee.hire_date = 
+	(select Max(hire_date) from employees)
+
+/* 18.Get the department number, name, and average salary for 
+departments with more than 3 employees. */
+select dd.dp_no, dd.dep_name from departments dd
+join 
 
 
-/* 13.*/
-/* 14.*/
-/* 15.*/
-/* 16.*/
-/* 17.*/
-/* 18.*/
-/* 19.*/
-/* 20.*/
+select  count(ee.emp_no), dd.dep_name from employees  ee
+join dept_emp de on de.emp_no = ee.emp_no
+join departments dd on de.dept_no = dd.dep_no
+group by dep_name
 
+
+/* 19.Retrieve the employee number, first name, last name, and 
+title of all employees hired in 2005.*/
+select  ee.emp_no, ee.first_name, tt.title from employees  ee
+join employee_titles tt on tt.emp_no = ee.emp_no
+where ee.hire_date between '2005-01-01' AND  '2005-12-31';
+
+/* 20.Find the department with the highest average salary. */
+select TOP 1 dd.dep_name, avg(ss.salary)  Average_Amount from departments dd
+join dept_emp de on  de.dept_no = dd.dep_no
+join salaries ss on ss.emp_no =  de.emp_no
+group by dd.dep_name
+Order by Average_Amount desc
+
+
+/* 21.  Retrieve the employee number, first name, last name, and 
+salary of employees hired before the year 2005. */
+
+select ee.emp_no, ee.first_name, ee.last_name, ss.salary from Employees ee
+join salaries ss on ss.emp_no =  ee.emp_no
+where ee.hire_date < '2005-01-01'
+
+select * from Employees
+
+
+/*22.Get the department number, name, and total number of employees 
+for departments with a female manager. */
+
+select dep_no, dep_name from departments dd
+select * from dept_emp
+
+
+/*23. Retrieve the employee number, first name, last name, and department
+name of employees who are currently working in the Finance department*/
+
+select ee.emp_no, ee.first_name, ee.last_name, dd.dep_name as Department_Name
+from Employees ee
+ 
+join dept_emp as de on ee.emp_no = de.emp_no 
+join departments as dd on dd.dep_no = dept_no
+where dd.dep_name = 'Finance'
+
+/*24.  Find the employee with the highest salary in each department. */
+
+
+select ee.first_name, dd.dep_name, ss.salary as highest_salary from Employees ee
+join salaries ss on ss.emp_no = ee.emp_no
+join dept_emp de on ee.emp_no = de.emp_no
+join departments dd on  dd.dep_no = de.dept_no
+WHERE ss.salary =
+			(
+			select max(s2.salary) from salaries s2
+			join dept_emp de2 on s2.emp_no = de2.emp_no
+			join departments  on dd.dep_no = de2.dept_no
+			)
