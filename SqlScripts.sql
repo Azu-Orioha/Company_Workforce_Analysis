@@ -37,7 +37,7 @@ select dd.dep_no as Department_number,
 	inner join dept_emp de on
 	dd.dep_no = de.dept_no
 	where de.emp_no = 10004
-	
+
 
 
 /* 9.Find the gender of employee with emp_no 10007. */
@@ -200,8 +200,9 @@ join dept_emp as de on ee.emp_no = de.emp_no
 join departments as dd on dd.dep_no = dept_no
 where dd.dep_name = 'Finance'
 
-/*24.  Find the employee with the highest salary in each department. */
 
+
+/*24.  Find the employee with the highest salary in each department. */
 
 select ee.first_name, dd.dep_name, ss.salary as highest_salary from Employees ee
 join salaries ss on ss.emp_no = ee.emp_no
@@ -214,9 +215,7 @@ WHERE ss.salary =
 			join departments  on dd.dep_no = de2.dept_no
 			)
 
-
-
- /*25. Retrieve the employee number, first name, last name, and department 
+/*25. Retrieve the employee number, first name, last name, and department 
  name of employees who  have held a managerial position.*/
  
  
@@ -227,9 +226,8 @@ WHERE ss.salary =
  join employee_titles et on ee.emp_no = et.emp_no
  where title like '%Manager'
 
-
   
-  /*26.Get the total number of employees who have held the title "Senior Manager.".*/
+/*26.Get the total number of employees who have held the title "Senior Manager.".*/
   select count (ee.emp_no)
   from employees ee
  JOIN dept_emp de on de.emp_no = ee.emp_no
@@ -249,11 +247,7 @@ WHERE ss.salary =
   group by dd.dep_name, dd.dep_no
   
 
-
-
-
-   
-  /*28.Find the employee with the longest tenure in the company. .*/
+/*28.Find the employee with the longest tenure in the company. .*/
  SELECT 
     ee.emp_no,
     ee.first_name,
@@ -318,8 +312,7 @@ FROM
   JOIN employee_titles et ON  ee.emp_no = et.emp_no
 WHERE
 	ee.hire_date between '2005-01-01' and '2006-01-01'
-
-  
+	 
  
   
   
@@ -337,7 +330,8 @@ FROM
 
 GROUP by dd.dep_name;
 
-	
+/*======================================================= */
+
 FROM 
      departments dd
 join dept_emp de ON dept_no = dd.dep_no
