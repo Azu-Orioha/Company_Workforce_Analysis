@@ -213,3 +213,151 @@ WHERE ss.salary =
 			join dept_emp de2 on s2.emp_no = de2.emp_no
 			join departments  on dd.dep_no = de2.dept_no
 			)
+
+
+
+ /*25. Retrieve the employee number, first name, last name, and department 
+ name of employees who  have held a managerial position.*/
+ 
+ 
+ select ee.emp_no, ee.first_name, ee.last_name, dd.dep_name, et.title
+  from employees ee
+ JOIN dept_emp de on de.emp_no = ee.emp_no
+ join departments dd on dd.dep_no = de.dept_no
+ join employee_titles et on ee.emp_no = et.emp_no
+ where title like '%Manager'
+
+
+  
+  /*26.Get the total number of employees who have held the title "Senior Manager.".*/
+  select count (ee.emp_no)
+  from employees ee
+ JOIN dept_emp de on de.emp_no = ee.emp_no
+ join departments dd on dd.dep_no = de.dept_no
+ join employee_titles et on ee.emp_no = et.emp_no
+ where title like 'Senior Manager'
+
+
+  /*27.Retrieve the department number, name, and the number of employees 
+  who have worked there for more than 5 years. .*/
+
+ select dd.dep_name, dd.dep_no, count(ee.emp_no) as Number_of_Emmployees
+ from departments dd
+  join dept_emp de on de.dept_no = dd.dep_no
+  join employees ee on ee.emp_no = de.emp_no
+  where  DATEDIFF(YEAR, ee.hire_date, GETDATE()) >=20
+  group by dd.dep_name, dd.dep_no
+  
+
+
+
+
+   
+  /*28.Find the employee with the longest tenure in the company. .*/
+ SELECT 
+    ee.emp_no,
+    ee.first_name,
+    ee.last_name,
+    dd.dep_no,
+    dd.dep_name,
+    DATEDIFF(YEAR, ee.hire_date, GETDATE()) AS Years_of_Service
+FROM 
+    employees ee
+JOIN 
+    dept_emp de ON ee.emp_no = de.emp_no
+JOIN 
+    departments dd ON de.dept_no = dd.dep_no
+WHERE 
+    DATEDIFF(YEAR, ee.hire_date, GETDATE()) = (
+        SELECT 
+            MAX(DATEDIFF(YEAR, e.hire_date, GETDATE()))
+        FROM 
+            employees e
+    )
+ORDER BY 
+    ee.hire_date ASC;
+
+/*28b. Find the employee with the longest tenure in the company by Department. .*/
+SELECT 
+	dd.dep_no,
+	dd.dep_name, 
+	ee.first_name,
+	ee.last_name,
+	DATEDIFF(YEAR, ee.hire_date, GETDATE()) as Years_of_Service
+from 
+	departments dd 
+
+JOIN 
+	dept_emp de ON dd.dep_no = de.dept_no
+
+JOIN 
+	employees ee on ee.emp_no = de.emp_no
+
+JOIN (SELECT 
+	d.dept_no, MAX(DATEDIFF(YEAR, e.hire_date, GETDATE())) AS MaxYears
+	FROM
+	Employees e
+	JOIN 
+	 dept_emp d ON e.emp_no = d.emp_no
+	 GROUP BY d.dept_no)
+	 AS  MaxYears ON MaxYears.dept_no = dd.dep_no
+	 where 
+	 DATEDIFF(YEAR, ee.hire_date, GETDATE())  = MaxYears.MaxYears
+
+
+/*29. Retrieve the employee number, first name, last name, and title 
+  of employees whose hire date is between '2005-01-01' and '2006-01-01'.  .*/
+
+  SELECT 
+    ee.emp_no,
+	ee.first_name, 
+	ee.last_name, 
+	et.title
+FROM 
+	employees ee 
+  JOIN employee_titles et ON  ee.emp_no = et.emp_no
+WHERE
+	ee.hire_date between '2005-01-01' and '2006-01-01'
+
+  
+ 
+  
+  
+/*30. Get the department number, name, and the oldest employee's birth 
+  date for each department..*/
+
+SELECT 
+	dd.dep_name,
+	MIN(ee.birth_date) as Oldest_Staff
+	
+FROM 
+	departments  dd
+	JOIN  dept_emp de ON de.dept_no = dd.dep_no
+	JOIN  employees ee ON ee.emp_no = de.emp_no
+
+GROUP by dd.dep_name;
+
+	
+FROM 
+     departments dd
+join dept_emp de ON dept_no = dd.dep_no
+Join (
+        
+	Select max(birth_date) from Employees ee
+	JOIN dept_emp de2 ON de2.emp_no = ee.emp_no
+
+	)  as Oldest_in_Department
+
+
+/*31. Show the number of years each employee hhas worked for .*/
+  select 
+	dd.dep_name, 
+	dd.dep_no, ee.first_name, 
+	Year(ee.hire_date) as Year_of_Hire,
+	DATEDIFF(YEAR, ee.hire_date, GETDATE()) AS Years_worked
+  FROM departments dd
+  join dept_emp de on de.dept_no = dd.dep_no
+  join employees ee on ee.emp_no = de.emp_no
+  
+  
+ 
